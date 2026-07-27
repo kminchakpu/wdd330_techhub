@@ -32,24 +32,27 @@
     <input type="text" id="searchInput" placeholder="Search topics (e.g., Async JS, CSS Grid)..." />
     <button type="button" id="searchBtn" aria-label="Search">Search</button>
   </div>
-
-  <div class="controls">
-    <select id="languageFilter" aria-label="Filter resources by language">
-      <option value="all">All Languages</option>
-      <option value="javascript">JavaScript</option>
-      <option value="python">Python</option>
-      <option value="html">HTML/CSS</option>
-    </select>
    <a href="/saved.html" id="savedResourcesBtn" class="btn-accent">
-  Watchlist (<span id="savedCount">0</span>)
-</a>
-  </div>
+    Watchlist (<span id="savedCount">0</span>)
+  </a>
+
 </header>
+
+<!-- Technology Filters -->
+<section class="technology-section">
+  <div class="technology-filters">
+    <button type="button" class="tech-filter-btn active" data-tech="All">All</button>
+    <button type="button" class="tech-filter-btn" data-tech="HTML">HTML</button>
+    <button type="button" class="tech-filter-btn" data-tech="CSS">CSS</button>
+    <button type="button" class="tech-filter-btn" data-tech="JavaScript">JavaScript</button>
+    <button type="button" class="tech-filter-btn" data-tech="SQL">SQL</button>
+  </div>
+</section>
 
  <!-- Hero / Featured Topics Section -->
 <section class="hero-banner">
   <h2>Featured Topics</h2>
-  <div id="featuredContainer" class="featured-grid">
+    <div id="featuredContainer" class="featured-grid">
     <!-- Dynamic topic cards will be rendered here via JS -->
   </div>
 </section>

@@ -1,40 +1,80 @@
-// Replace with your actual YouTube Data API Key
-const YOUTUBE_API_KEY = 'AIzaSyAo7t-vAXuricFUNjrfsx7HPnUdxAq3FiI';
-const BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
+// Replace with your YouTube Data API Key
+const YOUTUBE_API_KEY = "AIzaSyB171if5XC7G2L-KaAHAp7LKLtWhqWDTUA";
+const BASE_URL = "https://www.googleapis.com/youtube/v3/search";
 
 /**
- * Fetches YouTube videos based on a search query
- * @param {string} query - Keyword to search (e.g. "JavaScript tutorial")
- * @param {number} maxResults - Number of results to fetch
- * @returns {Promise<Array>} Array of video objects
+ * Fetches YouTube videos using ONE API request.
  */
-export async function fetchYouTubeVideos(query = 'web development', maxResults = 6) {
+export async function fetchYouTubeVideos() {
+
   try {
+
+    const query =
+      "HTML CSS JavaScript SQL Web Development";
+
     const url = new URL(BASE_URL);
-    url.searchParams.append('part', 'snippet');
-    url.searchParams.append('q', query);
-    url.searchParams.append('type', 'video');
-    url.searchParams.append('maxResults', maxResults.toString());
-    url.searchParams.append('key', YOUTUBE_API_KEY);
+
+    url.searchParams.set("part", "snippet");
+    url.searchParams.set("maxResults", "12");
+    url.searchParams.set("type", "video");
+    url.searchParams.set("q", query);
+    url.searchParams.set("key", YOUTUBE_API_KEY);
 
     const response = await fetch(url);
 
     if (!response.ok) {
-      throw new Error(`YouTube API error: ${response.status} ${response.statusText}`);
+      throw new Error(`YouTube API ${response.status}`);
     }
 
     const data = await response.json();
 
-    // Map raw API objects into clean application models
-    return data.items.map((item) => ({
-      id: item.id.videoId,
-      title: item.snippet.title,
-      channelTitle: item.snippet.channelTitle,
-      thumbnail: item.snippet.thumbnails.medium?.url || item.snippet.thumbnails.default?.url,
-      publishedAt: item.snippet.publishedAt
-    }));
-  } catch (error) {
-    console.error('Failed to fetch YouTube videos:', error);
-    return [];
+    return data.items.map(video => {
+
+      const title =
+        video.snippet.title.toLowerCase();
+
+      let category = "JavaScript";
+
+      if (title.includes("html"))
+        category = "HTML";
+
+      else if (title.includes("css"))
+        category = "CSS";
+
+      else if (title.includes("sql"))
+        category = "SQL";
+
+      return {
+
+        id: video.id.videoId,
+
+        title: video.snippet.title,
+
+        channelTitle: video.snippet.channelTitle,
+
+        thumbnail:
+          video.snippet.thumbnails.high?.url ||
+          video.snippet.thumbnails.medium?.url,
+
+        publishedAt:
+          video.snippet.publishedAt,
+
+        topic: category,
+
+        category
+
+      };
+
+    });
+
   }
+
+  catch (error) {
+
+    console.error("YouTube Error:", error);
+
+    return [];
+
+  }
+
 }

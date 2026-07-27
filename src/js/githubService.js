@@ -1,46 +1,61 @@
-const GITHUB_BASE_URL = 'https://api.github.com/search/repositories';
+const GITHUB_BASE_URL = "https://api.github.com/search/repositories";
 
 /**
- * Fetches GitHub repositories matching a query and optional language filter
- * @param {string} query - Topic or term (e.g., "react")
- * @param {string} language - Specific programming language filter
- * @param {number} perPage - Number of results
- * @returns {Promise<Array>} Array of repository objects
+ * Fetch GitHub repositories using ONE search request.
  */
-export async function fetchGitHubRepos(query = 'javascript', language = 'all', perPage = 6) {
+export async function fetchGitHubRepos() {
   try {
-    let searchQuery = query;
-    if (language && language !== 'all') {
-      searchQuery += `+language:${language}`;
-    }
+    const query =
+      "(html OR css OR javascript OR sql) in:name,description";
 
-    const url = `${GITHUB_BASE_URL}?q=${encodeURIComponent(searchQuery)}&sort=stars&order=desc&per_page=${perPage}`;
+    const url =
+      `${GITHUB_BASE_URL}?q=${encodeURIComponent(query)}&sort=stars&order=desc&per_page=12`;
 
     const response = await fetch(url, {
       headers: {
-        Accept: 'application/vnd.github.v3+json'
+        Accept: "application/vnd.github+json"
       }
     });
 
     if (!response.ok) {
-      throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
+      throw new Error(`GitHub API: ${response.status}`);
     }
 
     const data = await response.json();
 
-    // Map raw API objects into clean application models
-    return data.items.map((repo) => ({
-      id: repo.id,
-      name: repo.name,
-      owner: repo.owner.login,
-      description: repo.description,
-      stars: repo.stargazers_count,
-      forks: repo.forks_count,
-      language: repo.language,
-      url: repo.html_url
-    }));
+    return data.items.map(repo => {
+      let category = "JavaScript";
+      const lang = (repo.language || "").toLowerCase();
+
+      if (lang.includes("html")) category = "HTML";
+      else if (lang.includes("css")) category = "CSS";
+      else if (
+        lang.includes("sql") ||
+        repo.name.toLowerCase().includes("sql")
+      ) {
+        category = "SQL";
+      }
+
+      return {
+        id: repo.id,
+        owner: repo.owner.login,
+        avatar: repo.owner.avatar_url,
+        name: repo.name,
+        description: repo.description,
+        stars: repo.stargazers_count,
+        forks: repo.forks_count,
+        language: repo.language,
+        category,
+        topic: category,
+        url: repo.html_url
+      };
+    });
+
   } catch (error) {
-    console.error('Failed to fetch GitHub repositories:', error);
+
+    console.error("GitHub Error:", error);
+
     return [];
+
   }
 }
