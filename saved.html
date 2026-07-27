@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="TeachHub - Centralized Learning Resources for Developers" />
+  <meta name="keywords" content="TeachHub, Developer Resources, YouTube Tutorials, GitHub Repositories, Learning Hub" />
+  <meta name="author" content="Kevin Cross Minchakpu" />
+  <title>TeachHub | Saved Watchlist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/css/style.css" />
+  <script type="module" src="/src/js/main.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+  <a href="index.html" class="logo-container">
+  <!-- Image Logo -->
+  <img 
+    src="/images/logo.svg" 
+    alt="TeachHub Logo" 
+    class="site-logo" 
+    width="70" 
+    height="70" 
+  />
+  <h1>Teach<span>Hub</span></h1>
+</a>
+  
+  <div class="search-bar-container">
+    <input type="text" id="searchInput" placeholder="Search topics (e.g., Async JS, CSS Grid)..." />
+    <button type="button" id="searchBtn" aria-label="Search">Search</button>
+  </div>
+
+  <div class="controls">
+    <select id="languageFilter" aria-label="Filter resources by language">
+      <option value="all">All Languages</option>
+      <option value="javascript">JavaScript</option>
+      <option value="python">Python</option>
+      <option value="html">HTML/CSS</option>
+    </select>
+    <button type="button" id="savedResourcesBtn" class="btn-accent">Saved (<span id="savedCount">0</span>)</button>
+  </div>
+</header>
+
+  <main class="main-content">
+    <section class="resource-section">
+      <h2>Your Saved Watchlist & Repos</h2>
+      <div id="savedContainer" class="card-grid">
+        <!-- Saved items will render dynamically here -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Video Modal Overlay -->
+  <div id="videoModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-content">
+      <button type="button" id="closeModalBtn" class="close-btn">&times;</button>
+      <div id="modalPlayerContainer"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 TeachHub | Kevin Cross Minchakpu | Built with Vanilla JS & Web Standards</p>
+  </footer>
+
+  <script type="module" src="/src/js/saved.js"></script>
+</body>
+</html>

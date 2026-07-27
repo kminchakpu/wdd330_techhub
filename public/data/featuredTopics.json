@@ -1,0 +1,38 @@
+[
+  {
+    "id": "html-css",
+    "title": "HTML5 & Modern CSS",
+    "description": "Master responsive web design, CSS Grid, Flexbox, and modern CSS variables.",
+    "image": "/images/html.webp",
+    "tags": ["HTML5", "CSS3", "Responsive"],
+    "query": "html css responsive",
+    "url": "https://developer.mozilla.org/en-US/docs/Learn/CSS"
+  },
+  {
+    "id": "javascript",
+    "title": "JavaScript ES6+",
+    "description": "Explore asynchronous JS, Promises, Fetch API, and modern DOM manipulation.",
+    "image": "/images/JavaScript.webp",
+    "tags": ["JavaScript", "ES6", "DOM"],
+    "query": "javascript",
+    "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript"
+  },
+  {
+    "id": "python",
+    "title": "Python Development",
+    "description": "Learn core syntax, data structures, and backend concepts with Python.",
+    "image": "/images/python.webp",
+    "tags": ["Python", "Backend", "Logic"],
+    "query": "python",
+    "url": "https://docs.python.org/3/tutorial/index.html"
+  },
+  {
+    "id": "sql",
+    "title": "Database & SQL",
+    "description": "Understand database relationships, queries, and structured data storage.",
+    "image": "/images/database.webp",
+    "tags": ["SQL", "Databases", "Data"],
+    "query": "sql database",
+    "url": "https://www.w3schools.com/sql/"
+  }
+]
