@@ -1,50 +1,69 @@
 import { fetchYouTubeVideos } from "./api/youtubeService.js";
 import { fetchGitHubRepos } from "./api/githubService.js";
-import {createYouTubeCard, createGitHubCard } from "./render/uiRenderer.js";
+import { createYouTubeCard, createGitHubCard} from "./render/uiRenderer.js";
 import { escapeHTML } from "./utils/utils.js";
 import { initModal } from "./modal/modalModule.js";
-import {initSaveHandlers, registerResources} from "./storage/storageModule.js";
-import {protectPage, getCurrentUser, logoutUser} from "./auth/auth.js";
-import {initToast, showToast} from "./ui/toast.js";
+import { initSaveHandlers, registerResources} from "./storage/storageModule.js";
+import { protectPage, getCurrentUser, logoutUser} from "./auth/auth.js";
+import { initToast, showToast} from "./ui/toast.js";
+
+/* ==========================================
+   Global State
+========================================== */
 
 let featuredTopics = [];
+
 let youtubeVideos = [];
 let githubRepos = [];
 
 let currentTechnology = "All";
 let currentSearch = "";
 
-/* ---------------------------------------
+const ITEMS_PER_LOAD = 4;
+
+let visibleVideos = ITEMS_PER_LOAD;
+let visibleRepos = ITEMS_PER_LOAD;
+
+/* ==========================================
    Featured Topics
---------------------------------------- */
+========================================== */
 
 export async function loadFeaturedTopics() {
 
   try {
 
-    const response =
-      await fetch("/data/featuredTopics.json");
+    const response = await fetch(
+      "/data/featuredTopics.json"
+    );
 
     if (!response.ok) {
-      throw new Error("Unable to load featured topics.");
+      throw new Error(
+        "Unable to load featured topics."
+      );
     }
 
-    featuredTopics =
-      await response.json();
+    featuredTopics = await response.json();
 
     renderFeaturedTopics(featuredTopics);
 
-  } catch (error) {
+  }
+
+  catch (error) {
 
     console.error(error);
 
     const container =
-      document.getElementById("featuredContainer");
+      document.getElementById(
+        "featuredContainer"
+      );
 
     if (container) {
 
-      container.innerHTML =
-        `<p class="error-msg">Unable to load featured topics.</p>`;
+      container.innerHTML = `
+        <p class="error-msg">
+          Unable to load featured topics.
+        </p>
+      `;
 
     }
 
@@ -52,18 +71,58 @@ export async function loadFeaturedTopics() {
 
 }
 
-/* ---------------------------------------
-   Initial Data
---------------------------------------- */
+/* ==========================================
+   Skeleton Loader
+========================================== */
+
+function createSkeletonCards(count = 4) {
+
+  return Array.from(
+    { length: count },
+    () => `
+      <article class="resource-card skeleton-card">
+
+        <div class="skeleton skeleton-image"></div>
+
+        <div class="card-content">
+
+          <div class="skeleton skeleton-title"></div>
+
+          <div class="skeleton skeleton-text"></div>
+
+          <div class="skeleton skeleton-text short"></div>
+
+          <div class="skeleton skeleton-button"></div>
+
+        </div>
+
+      </article>
+    `
+  ).join("");
+
+}
+
+/* ==========================================
+   Initial API Load
+========================================== */
 
 async function loadInitialData() {
 
   try {
 
-    const [videos, repos] = await Promise.all([
-      fetchYouTubeVideos(),
-      fetchGitHubRepos()
-    ]);
+    document.getElementById(
+      "youtubeContainer"
+    ).innerHTML = createSkeletonCards();
+
+    document.getElementById(
+      "githubContainer"
+    ).innerHTML = createSkeletonCards();
+
+    const [videos, repos] =
+      await Promise.all([
+        fetchYouTubeVideos(),
+        fetchGitHubRepos()
+      ]);
 
     youtubeVideos = videos;
     githubRepos = repos;
@@ -73,20 +132,26 @@ async function loadInitialData() {
       ...githubRepos
     ]);
 
-    renderYouTube(youtubeVideos);
-    renderGitHub(githubRepos);
+    renderAll();
 
-  } catch (error) {
+  }
+
+  catch (error) {
 
     console.error(error);
+
+    showToast(
+      "Unable to load resources.",
+      "error"
+    );
 
   }
 
 }
 
-/* ---------------------------------------
+/* ==========================================
    Featured Topics Renderer
---------------------------------------- */
+========================================== */
 
 function renderFeaturedTopics(topics) {
 
@@ -95,93 +160,58 @@ function renderFeaturedTopics(topics) {
 
   if (!container) return;
 
-  container.innerHTML = topics.map(topic => `
+  container.innerHTML = topics
+    .map(topic => `
 
-    <article class="topic-card">
+      <article class="topic-card">
 
-      <img
-        src="${escapeHTML(topic.image)}"
-        alt="${escapeHTML(topic.title)}"
-        class="topic-card-img"
-        loading="lazy">
+        <img
+          src="${escapeHTML(topic.image)}"
+          alt="${escapeHTML(topic.title)}"
+          class="topic-card-img"
+          loading="lazy">
 
-      <div class="topic-card-body">
+        <div class="topic-card-body">
 
-        <h3 class="topic-card-title">
-          ${escapeHTML(topic.title)}
-        </h3>
+          <h3 class="topic-card-title">
+            ${escapeHTML(topic.title)}
+          </h3>
 
-        <p class="topic-card-desc">
-          ${escapeHTML(topic.description)}
-        </p>
+          <p class="topic-card-desc">
+            ${escapeHTML(topic.description)}
+          </p>
 
-        <div class="repo-meta">
+          <div class="repo-meta">
 
-          ${topic.tags.map(tag => `
-            <span class="tech-badge">
-              ${escapeHTML(tag)}
-            </span>
-          `).join("")}
+            ${topic.tags.map(tag => `
+              <span class="tech-badge">
+                ${escapeHTML(tag)}
+              </span>
+            `).join("")}
+
+          </div>
 
         </div>
 
-      </div>
+      </article>
 
-    </article>
-
-  `).join("");
-
-}
-
-/* ---------------------------------------
-   Render YouTube
---------------------------------------- */
-
-function renderYouTube(videos) {
-
-  const container =
-    document.getElementById("youtubeContainer");
-
-  if (!container) return;
-
-  container.innerHTML =
-    videos.map(createYouTubeCard).join("");
+    `)
+    .join("");
 
 }
 
-/* ---------------------------------------
-   Render GitHub
---------------------------------------- */
+/* ==========================================
+   Filtering Helpers
+========================================== */
 
-function renderGitHub(repositories) {
+function getFilteredVideos() {
 
-  const container =
-    document.getElementById("githubContainer");
-
-  if (!container) return;
-
-  container.innerHTML =
-    repositories.map(createGitHubCard).join("");
-
-}
-
-/* ---------------------------------------
-   Filter Resources
---------------------------------------- */
-
-function filterResources() {
-
-  let filteredVideos = [...youtubeVideos];
-  let filteredRepos = [...githubRepos];
+  let videos = [...youtubeVideos];
 
   if (currentTechnology !== "All") {
 
-    filteredVideos = filteredVideos.filter(
-      video => video.category === currentTechnology
-    );
-
-    filteredRepos = filteredRepos.filter(
-      repo => repo.category === currentTechnology
+    videos = videos.filter(video =>
+      video.category === currentTechnology
     );
 
   }
@@ -191,29 +221,193 @@ function filterResources() {
     const search =
       currentSearch.toLowerCase();
 
-    filteredVideos = filteredVideos.filter(video =>
-      video.title.toLowerCase().includes(search) ||
-      video.channelTitle.toLowerCase().includes(search) ||
-      (video.topic || "").toLowerCase().includes(search)
-    );
+    videos = videos.filter(video =>
 
-    filteredRepos = filteredRepos.filter(repo =>
-      repo.name.toLowerCase().includes(search) ||
-      repo.owner.toLowerCase().includes(search) ||
-      (repo.topic || "").toLowerCase().includes(search) ||
-      (repo.description || "").toLowerCase().includes(search)
+      video.title
+        .toLowerCase()
+        .includes(search)
+
+      ||
+
+      video.channelTitle
+        .toLowerCase()
+        .includes(search)
+
+      ||
+
+      (video.topic || "")
+        .toLowerCase()
+        .includes(search)
+
     );
 
   }
 
-  renderYouTube(filteredVideos);
-  renderGitHub(filteredRepos);
+  return videos;
 
 }
 
-/* ---------------------------------------
-   Technology Buttons
---------------------------------------- */
+function getFilteredRepos() {
+
+  let repos = [...githubRepos];
+
+  if (currentTechnology !== "All") {
+
+    repos = repos.filter(repo =>
+      repo.category === currentTechnology
+    );
+
+  }
+
+  if (currentSearch.trim()) {
+
+    const search =
+      currentSearch.toLowerCase();
+
+    repos = repos.filter(repo =>
+
+      repo.name
+        .toLowerCase()
+        .includes(search)
+
+      ||
+
+      repo.owner
+        .toLowerCase()
+        .includes(search)
+
+      ||
+
+      (repo.description || "")
+        .toLowerCase()
+        .includes(search)
+
+      ||
+
+      (repo.topic || "")
+        .toLowerCase()
+        .includes(search)
+
+    );
+
+  }
+
+  return repos;
+
+}
+
+/* ==========================================
+   Render YouTube
+========================================== */
+
+function renderYouTube(videos) {
+
+  const container =
+    document.getElementById("youtubeContainer");
+
+  const loadMoreBtn =
+    document.getElementById("youtubeLoadMore");
+
+  if (!container) return;
+
+  container.innerHTML = videos
+    .slice(0, visibleVideos)
+    .map(createYouTubeCard)
+    .join("");
+
+  if (!loadMoreBtn) return;
+
+  if (videos.length <= ITEMS_PER_LOAD) {
+
+    loadMoreBtn.style.display = "none";
+    return;
+
+  }
+
+  loadMoreBtn.style.display = "inline-flex";
+
+  loadMoreBtn.textContent =
+
+    visibleVideos >= videos.length
+
+      ? "Show Less"
+
+      : "Load More Tutorials";
+
+}
+
+/* ==========================================
+   Render GitHub
+========================================== */
+
+function renderGitHub(repos) {
+
+  const container =
+    document.getElementById("githubContainer");
+
+  const loadMoreBtn =
+    document.getElementById("githubLoadMore");
+
+  if (!container) return;
+
+  container.innerHTML = repos
+    .slice(0, visibleRepos)
+    .map(createGitHubCard)
+    .join("");
+
+  if (!loadMoreBtn) return;
+
+  if (repos.length <= ITEMS_PER_LOAD) {
+
+    loadMoreBtn.style.display = "none";
+    return;
+
+  }
+
+  loadMoreBtn.style.display = "inline-flex";
+
+  loadMoreBtn.textContent =
+
+    visibleRepos >= repos.length
+
+      ? "Show Less"
+
+      : "Load More Repositories";
+
+}
+
+/* ==========================================
+   Render Everything
+========================================== */
+
+function renderAll() {
+
+  renderYouTube(
+    getFilteredVideos()
+  );
+
+  renderGitHub(
+    getFilteredRepos()
+  );
+
+}
+
+/* ==========================================
+   Filter Resources
+========================================== */
+
+function filterResources() {
+
+  visibleVideos = ITEMS_PER_LOAD;
+  visibleRepos = ITEMS_PER_LOAD;
+
+  renderAll();
+
+}
+
+/* ==========================================
+   Technology Filters
+========================================== */
 
 function initializeTechnologyFilters() {
 
@@ -241,11 +435,12 @@ function initializeTechnologyFilters() {
 
 }
 
-/* ---------------------------------------
+/* ==========================================
    Search
---------------------------------------- */
+========================================== */
 
 function initializeSearch() {
+
   const input =
     document.getElementById("searchInput");
 
@@ -254,64 +449,167 @@ function initializeSearch() {
 
   if (!input || !button) return;
 
-  const search = () => {
+  function search() {
 
     currentSearch =
       input.value.trim();
 
     filterResources();
 
-  };
+  }
 
-  button.addEventListener("click", search);
+  button.addEventListener(
+    "click",
+    search
+  );
 
-  input.addEventListener("keyup", event => {
+  input.addEventListener(
+    "input",
+    search
+  );
 
-    if (event.key === "Enter") {
+  input.addEventListener(
+    "keyup",
+    event => {
 
-      search();
+      if (event.key === "Enter") {
+
+        search();
+
+      }
 
     }
-
-  });
-
-  input.addEventListener("input", search);
+  );
 
 }
 
-/* ---------------------------------------
+/* ==========================================
+   Load More Buttons
+========================================== */
+
+function initializeLoadMore() {
+
+  const youtubeButton =
+    document.getElementById(
+      "youtubeLoadMore"
+    );
+
+  const githubButton =
+    document.getElementById(
+      "githubLoadMore"
+    );
+
+  if (youtubeButton) {
+
+    youtubeButton.addEventListener(
+      "click",
+      () => {
+
+        const total =
+          getFilteredVideos().length;
+
+        if (visibleVideos >= total) {
+
+          visibleVideos =
+            ITEMS_PER_LOAD;
+
+        }
+
+        else {
+
+          visibleVideos +=
+            ITEMS_PER_LOAD;
+
+        }
+
+        renderYouTube(
+          getFilteredVideos()
+        );
+
+      }
+    );
+
+  }
+
+  if (githubButton) {
+
+    githubButton.addEventListener(
+      "click",
+      () => {
+
+        const total =
+          getFilteredRepos().length;
+
+        if (visibleRepos >= total) {
+
+          visibleRepos =
+            ITEMS_PER_LOAD;
+
+        }
+
+        else {
+
+          visibleRepos +=
+            ITEMS_PER_LOAD;
+
+        }
+
+        renderGitHub(
+          getFilteredRepos()
+        );
+
+      }
+    );
+
+  }
+
+}
+
+/* ==========================================
+   Logout
+========================================== */
+
+function initializeLogout() {
+
+  const logoutBtn =
+    document.getElementById(
+      "logoutBtn"
+    );
+
+  if (!logoutBtn) return;
+
+  logoutBtn.addEventListener(
+    "click",
+    () => {
+
+      logoutUser();
+
+      showToast(
+        "Logged out successfully.",
+        "success"
+      );
+
+      setTimeout(() => {
+
+        window.location.href =
+          "/auth.html";
+
+      }, 700);
+
+    }
+  );
+
+}
+
+/* ==========================================
    Main
---------------------------------------- */
+========================================== */
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-  /* Logged in user */
-  const user = getCurrentUser();
+  /* Initialize UI */
 
-  const welcomeUser =
-    document.getElementById("welcomeUser");
-
-  if (welcomeUser && user) {
-
-    welcomeUser.textContent =
-      `👋 Welcome, ${user.name}`;
-
-  }
-
-  /* Logout */
-
-  const logoutBtn =
-    document.getElementById("logoutBtn");
-
-  if (logoutBtn) {
-
-    logoutBtn.addEventListener("click", () => {
-      logoutUser();
-      window.location.href = "/auth.html";
-
-    });
-
-  }
+  initToast();
 
   const modalController =
     initModal();
@@ -319,45 +617,107 @@ document.addEventListener("DOMContentLoaded", async () => {
   initSaveHandlers();
   initializeTechnologyFilters();
   initializeSearch();
-  initToast();
+  initializeLoadMore();
+  initializeLogout();
+
+  /* Welcome User */
+  const user =
+    getCurrentUser();
+  const welcomeUser =
+    document.getElementById("welcomeUser");
+  if (welcomeUser && user) {
+    welcomeUser.textContent =
+      `👋 Welcome, ${user.name}`;
+
+  }
+
+  /* Featured Topics */
   await loadFeaturedTopics();
+  /* Load API Resources */
   await loadInitialData();
 
-  document.addEventListener("click", (event) => {
+  /* ======================================
+     Watch YouTube Video
+  ====================================== */
 
-  const watchButton = event.target.closest(".watch-btn");
-  if (!watchButton) return;
-  const user = getCurrentUser();
+  document.addEventListener("click", event => {
+    const watchBtn =
+      event.target.closest(".watch-btn");
+    if (!watchBtn) return;
+    const user =
+      getCurrentUser();
 
-  if (!user) {
-    showToast("Please sign in to watch videos.", "warning");
-    window.location.href = "/auth.html";
-    return;
+    if (!user) {
 
-  }
+      showToast(
+        "Please sign in to watch videos.",
+        "warning"
+      );
 
-  const videoId = watchButton.dataset.videoId;
-  modalController.openModal(videoId);
+      setTimeout(() => {
 
-});
+        window.location.href =
+          "/auth.html";
 
-document.addEventListener("click", (event) => {
-  const repoButton = event.target.closest(".btn-github");
+      }, 800);
 
-  if (!repoButton) return;
-  event.preventDefault();
-  const user = getCurrentUser();
+      return;
 
-  if (!user) {
-    showToast("Please sign in to view GitHub repositories.", "warning");
-    window.location.href = "/auth.html";
-    return;
-  }
+    }
 
-  const repoUrl = repoButton.dataset.url;
+    modalController.openModal(
+      watchBtn.dataset.videoId
+    );
 
-  if (repoUrl) {
-    window.open(repoUrl, "_blank", "noopener,noreferrer");
-  }
-});
+  });
+
+  /* ======================================
+     Open GitHub Repository
+  ====================================== */
+
+  document.addEventListener("click", event => {
+
+    const repoBtn =
+      event.target.closest(".btn-github");
+
+    if (!repoBtn) return;
+
+    event.preventDefault();
+
+    const user =
+      getCurrentUser();
+
+    if (!user) {
+
+      showToast(
+        "Please sign in to access GitHub repositories.",
+        "warning"
+      );
+
+      setTimeout(() => {
+
+        window.location.href =
+          "/auth.html";
+
+      }, 800);
+
+      return;
+
+    }
+
+    const url =
+      repoBtn.dataset.url;
+
+    if (url) {
+
+      window.open(
+        url,
+        "_blank",
+        "noopener,noreferrer"
+      );
+
+    }
+
+  });
+
 });

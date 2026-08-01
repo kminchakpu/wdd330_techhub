@@ -311,3 +311,92 @@
     flex-wrap:wrap;
     gap:1rem;
 }
+
+
+/* ===========================
+   Load More Buttons
+=========================== */
+
+.load-more-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.load-more-wrapper .btn-accent {
+  min-width: 220px;
+}
+
+/* ===========================
+   Skeleton Loader
+=========================== */
+
+.skeleton-card{
+    background:#fff;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+.skeleton{
+    position:relative;
+    overflow:hidden;
+    background:#e5e7eb;
+}
+
+.skeleton::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    transform:translateX(-100%);
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.6),
+        transparent
+    );
+    animation:skeleton-loading 1.2s infinite;
+}
+
+@keyframes skeleton-loading{
+
+    100%{
+        transform:translateX(100%);
+    }
+
+}
+
+.skeleton-image{
+
+    height:180px;
+
+}
+
+.skeleton-title{
+
+    width:80%;
+    height:22px;
+    margin:18px;
+
+}
+
+.skeleton-text{
+
+    width:90%;
+    height:14px;
+    margin:12px 18px;
+
+}
+
+.skeleton-text.short{
+   width:60%;
+
+}
+
+.skeleton-button{
+
+    width:130px;
+    height:40px;
+    margin:25px 18px;
+
+}

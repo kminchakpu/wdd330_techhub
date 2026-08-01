@@ -69,19 +69,39 @@
   <main class="main-content">
     <!-- YouTube Section -->
     <section class="resource-section">
-      <h2>YouTube Tutorials</h2>
-      <div id="youtubeContainer" class="card-grid">
-        <!-- Dynamic video cards render here -->
-      </div>
-    </section>
+  <h2>YouTube Tutorials</h2>
+
+  <div id="youtubeContainer" class="card-grid">
+    <!-- Dynamic video cards render here -->
+  </div>
+
+  <div class="load-more-wrapper">
+    <button
+      id="youtubeLoadMore"
+      type="button"
+      class="btn-accent">
+      Load More Tutorials
+    </button>
+  </div>
+</section>
 
     <!-- GitHub Section -->
     <section class="resource-section">
-      <h2>GitHub Repositories</h2>
-      <div id="githubContainer" class="card-grid">
-        <!-- Dynamic repo cards render here -->
-      </div>
-    </section>
+  <h2>GitHub Repositories</h2>
+
+  <div id="githubContainer" class="card-grid">
+    <!-- Dynamic repo cards render here -->
+  </div>
+
+  <div class="load-more-wrapper">
+    <button
+      id="githubLoadMore"
+      type="button"
+      class="btn-accent">
+      Load More Repositories
+    </button>
+  </div>
+</section>
   </main>
 
   <!-- Video Modal Overlay -->
@@ -105,7 +125,7 @@
 
         <div class="confirm-actions">
             <button type="button"
-                id="confirmCancel"
+                id="confirmNo"
                 class="btn-secondary">
                 Cancel
            </button>
