@@ -1,5 +1,5 @@
 // Replace with your YouTube Data API Key
-const YOUTUBE_API_KEY = "AIzaSyB171if5XC7G2L-KaAHAp7LKLtWhqWDTUA";
+const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
 const BASE_URL = "https://www.googleapis.com/youtube/v3/search";
 
 /**
