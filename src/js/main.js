@@ -1,12 +1,10 @@
-import { fetchYouTubeVideos } from "./youtubeService.js";
-import { fetchGitHubRepos } from "./githubService.js";
-import { createYouTubeCard, createGitHubCard } from "./uiRenderer.js";
-import { escapeHTML } from "./utils.js";
-import { initModal } from "./modalModule.js";
-import {
-  initSaveHandlers,
-  registerResources
-} from "./storageModule.js";
+import { fetchYouTubeVideos } from "./api/youtubeService.js";
+import { fetchGitHubRepos } from "./api/githubService.js";
+import {createYouTubeCard, createGitHubCard } from "./render/uiRenderer.js";
+import { escapeHTML } from "./utils/utils.js";
+import { initModal } from "./modal/modalModule.js";
+import {initSaveHandlers, registerResources} from "./storage/storageModule.js";
+import {protectPage, getCurrentUser, logoutUser} from "./auth/auth.js";
 
 let featuredTopics = [];
 let youtubeVideos = [];
@@ -15,34 +13,47 @@ let githubRepos = [];
 let currentTechnology = "All";
 let currentSearch = "";
 
-/* Featured Topics */
+/* ---------------------------------------
+   Featured Topics
+--------------------------------------- */
 
 export async function loadFeaturedTopics() {
+
   try {
-    const response = await fetch("/data/featuredTopics.json");
+
+    const response =
+      await fetch("/data/featuredTopics.json");
 
     if (!response.ok) {
       throw new Error("Unable to load featured topics.");
     }
 
-    featuredTopics = await response.json();
+    featuredTopics =
+      await response.json();
 
-    // Featured Topics remain static
     renderFeaturedTopics(featuredTopics);
 
   } catch (error) {
+
     console.error(error);
 
-    const container = document.getElementById("featuredContainer");
+    const container =
+      document.getElementById("featuredContainer");
 
     if (container) {
+
       container.innerHTML =
         `<p class="error-msg">Unable to load featured topics.</p>`;
+
     }
+
   }
+
 }
 
-/* Initial API Loading */
+/* ---------------------------------------
+   Initial Data
+--------------------------------------- */
 
 async function loadInitialData() {
 
@@ -72,7 +83,9 @@ async function loadInitialData() {
 
 }
 
-/* Featured Topics Renderer */
+/* ---------------------------------------
+   Featured Topics Renderer
+--------------------------------------- */
 
 function renderFeaturedTopics(topics) {
 
@@ -119,7 +132,9 @@ function renderFeaturedTopics(topics) {
 
 }
 
-/* Render YouTube */
+/* ---------------------------------------
+   Render YouTube
+--------------------------------------- */
 
 function renderYouTube(videos) {
 
@@ -133,7 +148,9 @@ function renderYouTube(videos) {
 
 }
 
-/* Render GitHub */
+/* ---------------------------------------
+   Render GitHub
+--------------------------------------- */
 
 function renderGitHub(repositories) {
 
@@ -147,32 +164,31 @@ function renderGitHub(repositories) {
 
 }
 
-/* Filter API Resources ONLY */
+/* ---------------------------------------
+   Filter Resources
+--------------------------------------- */
 
 function filterResources() {
 
   let filteredVideos = [...youtubeVideos];
   let filteredRepos = [...githubRepos];
 
-  /* Technology Filter */
-
   if (currentTechnology !== "All") {
 
-    filteredVideos = filteredVideos.filter(video =>
-      video.category === currentTechnology
+    filteredVideos = filteredVideos.filter(
+      video => video.category === currentTechnology
     );
 
-    filteredRepos = filteredRepos.filter(repo =>
-      repo.category === currentTechnology
+    filteredRepos = filteredRepos.filter(
+      repo => repo.category === currentTechnology
     );
 
   }
 
-  /* Search Filter */
-
   if (currentSearch.trim()) {
 
-    const search = currentSearch.toLowerCase();
+    const search =
+      currentSearch.toLowerCase();
 
     filteredVideos = filteredVideos.filter(video =>
       video.title.toLowerCase().includes(search) ||
@@ -194,7 +210,9 @@ function filterResources() {
 
 }
 
-/* Technology Buttons */
+/* ---------------------------------------
+   Technology Buttons
+--------------------------------------- */
 
 function initializeTechnologyFilters() {
 
@@ -222,7 +240,9 @@ function initializeTechnologyFilters() {
 
 }
 
-/* Search */
+/* ---------------------------------------
+   Search
+--------------------------------------- */
 
 function initializeSearch() {
 
@@ -245,7 +265,7 @@ function initializeSearch() {
 
   button.addEventListener("click", search);
 
-  input.addEventListener("keyup", (event) => {
+  input.addEventListener("keyup", event => {
 
     if (event.key === "Enter") {
 
@@ -259,38 +279,88 @@ function initializeSearch() {
 
 }
 
-/* Main Application */
+/* ---------------------------------------
+   Main
+--------------------------------------- */
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-  const modalController = initModal();
+  /* Logged in user */
+  const user = getCurrentUser();
+
+  const welcomeUser =
+    document.getElementById("welcomeUser");
+
+  if (welcomeUser && user) {
+
+    welcomeUser.textContent =
+      `👋 Welcome, ${user.name}`;
+
+  }
+
+  /* Logout */
+
+  const logoutBtn =
+    document.getElementById("logoutBtn");
+
+  if (logoutBtn) {
+
+    logoutBtn.addEventListener("click", () => {
+
+      logoutUser();
+
+      window.location.href = "/auth.html";
+
+    });
+
+  }
+
+  const modalController =
+    initModal();
 
   initSaveHandlers();
-
   initializeTechnologyFilters();
-
   initializeSearch();
-
-  // Load static section
   await loadFeaturedTopics();
-
-  // Load API resources
   await loadInitialData();
 
   document.addEventListener("click", (event) => {
 
-    const watchButton =
-      event.target.closest(".watch-btn");
+  const watchButton = event.target.closest(".watch-btn");
+  if (!watchButton) return;
+  const user = getCurrentUser();
 
-    if (!watchButton) return;
+  if (!user) {
+    alert("Please sign in to watch videos.");
+    window.location.href = "/auth.html";
+    return;
 
-    const videoId =
-      watchButton.dataset.videoId;
+  }
 
-    if (!videoId) return;
+  const videoId = watchButton.dataset.videoId;
+  modalController.openModal(videoId);
 
-    modalController.openModal(videoId);
+});
 
-  });
+document.addEventListener("click", (event) => {
+  const repoButton = event.target.closest(".btn-github");
 
+  if (!repoButton) return;
+
+  event.preventDefault();
+
+  const user = getCurrentUser();
+
+  if (!user) {
+    alert("Please sign in to view GitHub repositories.");
+    window.location.href = "/auth.html";
+    return;
+  }
+
+  const repoUrl = repoButton.dataset.url;
+
+  if (repoUrl) {
+    window.open(repoUrl, "_blank", "noopener,noreferrer");
+  }
+});
 });

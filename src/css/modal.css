@@ -1,0 +1,52 @@
+/*==================================
+    MODAL
+===================================*/
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.85);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:2rem;
+    z-index:3000;
+}
+
+.modal.hidden{
+    display:none;
+}
+
+.modal-content{
+    position:relative;
+    width:min(1000px,95vw);
+    background:var(--white);
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:var(--shadow-hover);
+}
+
+#modalPlayerContainer iframe{
+    width:100%;
+    aspect-ratio:16/9;
+    border:none;
+}
+
+.close-btn{
+    position:absolute;
+    top:15px;
+    right:20px;
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:50%;
+    background:var(--color-accent-yt);
+    color:var(--white);
+    font-size:1.4rem;
+    cursor:pointer;
+    transition:var(--transition-smooth);
+}
+
+.close-btn:hover{
+    transform:rotate(90deg);
+}

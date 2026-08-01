@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="src/css/style.css" />
+  <link rel="stylesheet" href="/src/css/style.css" />
   <script type="module" src="/src/js/main.js"></script>
 </head>
 <body>
@@ -32,9 +32,17 @@
     <input type="text" id="searchInput" placeholder="Search topics (e.g., Async JS, CSS Grid)..." />
     <button type="button" id="searchBtn" aria-label="Search">Search</button>
   </div>
-   <a href="/saved.html" id="savedResourcesBtn" class="btn-accent">
+  <div class="user-menu">
+  <span id="welcomeUser"></span>
+  <a href="/saved.html" class="btn-accent">
     Watchlist (<span id="savedCount">0</span>)
   </a>
+
+  <button type="button" id="logoutBtn" class="btn-accent">
+    Logout
+  </button>
+
+</div>
 
 </header>
 

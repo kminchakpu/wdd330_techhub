@@ -1,17 +1,15 @@
-import { escapeHTML } from "./utils.js";
-import { isResourceSaved } from "./storageModule.js";
+import { escapeHTML } from "../utils/utils.js";
+import { isResourceSaved } from "../storage/storageModule.js";
 
-/**
- * Creates HTML string for a YouTube video card.
- * @param {Object} video
- * @param {Object} options
- * @returns {string}
- */
+/* =========================================
+   YouTube Card
+========================================= */
+
 export function createYouTubeCard(video, options = {}) {
   const isSaved = isResourceSaved(video.id);
   const isWatchlist = options.isWatchlist || false;
 
-  const actionButtonHtml = isWatchlist
+  const actionButton = isWatchlist
     ? `
       <button
         type="button"
@@ -30,16 +28,15 @@ export function createYouTubeCard(video, options = {}) {
     `;
 
   return `
-    <article class="resource-card youtube-card" data-id="${escapeHTML(
-      video.id
-    )}">
+    <article
+      class="resource-card youtube-card"
+      data-id="${escapeHTML(video.id)}">
 
       <div class="thumbnail-container">
         <img
           src="${escapeHTML(video.thumbnail)}"
           alt="${escapeHTML(video.title)}"
-          loading="lazy"
-        />
+          loading="lazy">
       </div>
 
       <div class="card-content">
@@ -59,18 +56,24 @@ export function createYouTubeCard(video, options = {}) {
           </span>
 
           <span class="tech-badge">
-            ${escapeHTML(video.topic)}
+            ${escapeHTML(video.topic || "")}
           </span>
 
-          <span class="tech-badge">
-            ${escapeHTML(video.level)}
-          </span>
+          ${
+            video.level
+              ? `
+              <span class="tech-badge">
+                ${escapeHTML(video.level)}
+              </span>
+            `
+              : ""
+          }
 
         </div>
 
         <div class="card-actions">
 
-          ${actionButtonHtml}
+          ${actionButton}
 
           <button
             type="button"
@@ -89,25 +92,21 @@ export function createYouTubeCard(video, options = {}) {
   `;
 }
 
-/**
- * Creates HTML string for a GitHub repository card.
- * @param {Object} repo
- * @param {Object} options
- * @returns {string}
- */
+/* =========================================
+   GitHub Card
+========================================= */
+
 export function createGitHubCard(repo, options = {}) {
   const isSaved = isResourceSaved(repo.id);
   const isWatchlist = options.isWatchlist || false;
 
-  const actionButtonHtml = isWatchlist
+  const actionButton = isWatchlist
     ? `
       <button
         type="button"
         class="btn-sm delete-btn"
         data-id="${escapeHTML(repo.id)}">
-
         🗑️ Delete
-
       </button>
     `
     : `
@@ -115,16 +114,14 @@ export function createGitHubCard(repo, options = {}) {
         type="button"
         class="btn-sm save-btn ${isSaved ? "saved" : ""}"
         data-id="${escapeHTML(repo.id)}">
-
         ${isSaved ? "★ Saved" : "+ Save"}
-
       </button>
     `;
 
   return `
-    <article class="resource-card github-card" data-id="${escapeHTML(
-      repo.id
-    )}">
+    <article
+      class="resource-card github-card"
+      data-id="${escapeHTML(repo.id)}">
 
       <div class="card-content">
 
@@ -134,8 +131,7 @@ export function createGitHubCard(repo, options = {}) {
             src="${escapeHTML(repo.avatar)}"
             alt="${escapeHTML(repo.owner)}"
             class="github-avatar"
-            loading="lazy"
-          />
+            loading="lazy">
 
           <div>
 
@@ -152,7 +148,7 @@ export function createGitHubCard(repo, options = {}) {
         </div>
 
         <p class="card-desc">
-          ${escapeHTML(repo.description)}
+          ${escapeHTML(repo.description || "No description available.")}
         </p>
 
         <div class="repo-meta">
@@ -162,11 +158,7 @@ export function createGitHubCard(repo, options = {}) {
           </span>
 
           <span class="tech-badge">
-            ${escapeHTML(repo.topic)}
-          </span>
-
-          <span class="tech-badge">
-            ${escapeHTML(repo.level)}
+            ${escapeHTML(repo.topic || "")}
           </span>
 
           ${
@@ -182,23 +174,34 @@ export function createGitHubCard(repo, options = {}) {
         </div>
 
         <div class="repo-stats">
-          <span>⭐ ${Number(repo.stars).toLocaleString()}</span>
-          <span>🍴 ${Number(repo.forks).toLocaleString()}</span>
+
+          <span>
+            ⭐ ${Number(repo.stars).toLocaleString()}
+          </span>
+
+          <span>
+            🍴 ${Number(repo.forks).toLocaleString()}
+          </span>
+
         </div>
 
         <div class="card-actions">
 
-          ${actionButtonHtml}
+          ${actionButton}
 
-          <a
-            href="${escapeHTML(repo.url)}"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-sm btn-github">
+          <button
+            type="button"
+            class="btn-sm btn-github"
+            data-url="${repo.url}">
+
             View Repository
-          </a>
+
+          </button>
+
         </div>
+
       </div>
+
     </article>
   `;
 }

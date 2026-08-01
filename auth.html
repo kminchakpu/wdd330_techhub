@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="TeachHub - Centralized Learning Resources for Developers" />
+  <meta name="keywords" content="TeachHub, Developer Resources, YouTube Tutorials, GitHub Repositories, Learning Hub" />
+  <meta name="author" content="Kevin Cross Minchakpu" />
+  <title>TeachHub | Developer Resource Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/css/style.css" />
+  <script type="module" src="/src/js/auth/authPage.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+  <a href="index.html" class="logo-container">
+  <!-- Image Logo -->
+  <img 
+    src="/images/logo.svg" 
+    alt="TeachHub Logo" 
+    class="site-logo" 
+    width="70" 
+    height="70" 
+  />
+  <h1>Teach<span>Hub</span></h1>
+</a>
+  
+  <div class="search-bar-container">
+    <input type="text" id="searchInput" placeholder="Search topics (e.g., Async JS, CSS Grid)..." />
+    <button type="button" id="searchBtn" aria-label="Search">Search</button>
+  </div>
+   <a href="/saved.html" id="savedResourcesBtn" class="btn-accent">
+    Watchlist (<span id="savedCount">0</span>)
+  </a>
+
+</header>
+
+<main>
+    <div class="auth-page">
+
+    <div class="auth-container">
+
+        <div class="brand">
+
+            <img
+                src="/images/logo.svg"
+                alt="TeachHub Logo"
+                width="70"
+                height="70">
+
+            <h1>Teach<span>Hub</span></h1>
+
+            <p>
+                Learn. Build. Grow.
+            </p>
+
+        </div>
+
+        <div class="auth-tabs">
+
+            <button type="button"
+                id="loginTab"
+                class="tab-btn active">
+
+                Sign In
+
+            </button>
+
+            <button type="button"
+                id="signupTab"
+                class="tab-btn">
+
+                Create Account
+
+            </button>
+
+        </div>
+
+        <!-- Login Form -->
+
+        <form
+            id="loginForm"
+            class="auth-form">
+
+            <div class="form-group">
+
+                <label for="loginEmail">
+
+                    Email Address
+
+                </label>
+
+                <input
+                    type="email"
+                    id="loginEmail"
+                    required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="loginPassword">
+
+                    Password
+
+                </label>
+
+                <input
+                    type="password"
+                    id="loginPassword"
+                    required>
+
+            </div>
+
+            <button
+                class="auth-btn"
+                type="submit">
+
+                Sign In
+
+            </button>
+
+        </form>
+
+        <!-- Sign Up Form -->
+
+        <form
+            id="signupForm"
+            class="auth-form hidden">
+
+            <div class="form-group">
+
+                <label for="fullName">
+
+                    Full Name
+
+                </label>
+
+                <input
+                    type="text"
+                    id="fullName"
+                    required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="signupEmail">
+
+                    Email Address
+
+                </label>
+
+                <input
+                    type="email"
+                    id="signupEmail"
+                    required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="signupPassword">
+
+                    Password
+
+                </label>
+
+                <input
+                    type="password"
+                    id="signupPassword"
+                    minlength="8"
+                    required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="confirmPassword">
+
+                    Confirm Password
+
+                </label>
+
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    minlength="8"
+                    required>
+
+            </div>
+
+            <button
+                class="auth-btn"
+                type="submit">
+
+                Create Account
+
+            </button>
+
+        </form>
+
+        <p
+            id="authMessage"
+            class="auth-message">
+
+        </p>
+
+    </div>
+
+</div>
+</main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p>&copy; 2026 TeachHub | Kevin Cross Minchakpu | Built with Vanilla JS & Web Standards</p>
+  </footer>
+
+  </body>
+</html>

@@ -1,0 +1,67 @@
+/* Controls (Dropdown & Saved Button) */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+ }
+
+.controls select {
+  padding: 0.65rem 0.85rem;
+  font-family: var(--font-family-base);
+  font-size: 0.9rem;
+  background-color: var(--white);
+  color: var(--color-dark-charcoal);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  cursor: pointer;
+  outline: none;
+}
+
+
+
+/* ==========================================
+   Technology Filter Buttons
+========================================== */
+
+.technology-filters {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin: 1.5rem auto 2rem;
+  width: min(100%, 1200px);
+  padding: 0 1rem;
+}
+
+.tech-filter-btn {
+  background: #ffffff;
+  color: #1d3557;
+  border: 2px solid #dbe3ef;
+  border-radius: 5px;
+  padding: 0.55rem 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tech-filter-btn:hover {
+  background: #4f46e5;
+  border-color: #4f46e5;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.tech-filter-btn.active {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 6px 15px rgba(79, 70, 229, 0.25);
+}
+
+.tech-filter-btn:focus-visible {
+  outline: 3px solid rgba(79, 70, 229, 0.35);
+  outline-offset: 3px;
+}

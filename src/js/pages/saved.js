@@ -1,6 +1,6 @@
-import { getSavedResources, toggleSaveResource, updateSavedCounter } from './storageModule.js';
-import { createYouTubeCard, createGitHubCard } from './uiRenderer.js';
-import { initModal } from './modalModule.js';
+import {getSavedResources, toggleSaveResource, updateSavedCounter } from "../storage/storageModule.js";
+import {createYouTubeCard, createGitHubCard } from "../render/uiRenderer.js";
+import { initModal } from "../modal/modalModule.js";
 
 document.addEventListener('DOMContentLoaded', () => {
   const modalController = initModal();

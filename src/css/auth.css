@@ -1,0 +1,146 @@
+/*==================================
+    AUTH PAGES
+===================================*/
+
+.auth-page{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:var(--background-color);
+    padding:2rem;
+}
+
+.auth-container{
+    width:min(500px,100%);
+    background:var(--white);
+    padding:2.5rem;
+    border-radius:12px;
+    box-shadow:var(--shadow-hover);
+}
+
+.auth-title{
+    text-align:center;
+    color:var(--primary-color);
+    margin-bottom:2rem;
+    font-family:var(--heading-font);
+}
+
+.auth-form{
+    display:flex;
+    flex-direction:column;
+    gap:1.25rem;
+}
+
+.auth-form label{
+    font-weight:600;
+    color:var(--primary-color);
+}
+
+.auth-form input{
+    width:100%;
+    padding:.9rem 1rem;
+    border:1px solid var(--color-border);
+    border-radius:6px;
+    background:var(--color-input-bg);
+    font-size:1rem;
+}
+
+.auth-form input:focus{
+    outline:none;
+    border-color:var(--color-accent-gh);
+}
+
+.auth-btn{
+    background:var(--color-accent-gh);
+    color:var(--white);
+    border:none;
+    padding:1rem;
+    border-radius:6px;
+    font-weight:700;
+    transition:var(--transition-smooth);
+}
+
+.auth-btn:hover{
+    transform:translateY(-2px);
+}
+
+.auth-footer{
+    text-align:center;
+    margin-top:1.5rem;
+}
+
+.auth-footer a{
+    color:var(--color-accent-gh);
+    font-weight:600;
+}
+
+.auth-error{
+    color:#dc2626;
+    font-size:.9rem;
+}
+
+.auth-success{
+    color:#16a34a;
+    font-size:.9rem;
+}
+
+.auth-tabs{
+    display:flex;
+    margin-bottom:2rem;
+    border:1px solid var(--color-border);
+    border-radius:8px;
+    overflow:hidden;
+}
+
+.tab-btn{
+    flex:1;
+    padding:1rem;
+    border:none;
+    background:var(--gray-light);
+    color:var(--primary-color);
+    font-weight:700;
+    cursor:pointer;
+    transition:var(--transition-smooth);
+}
+
+.tab-btn:hover{
+    background:var(--color-input-bg);
+}
+
+.tab-btn.active{
+    background:var(--color-accent-gh);
+    color:var(--white);
+}
+
+.auth-message{
+    margin-top:1rem;
+    text-align:center;
+    font-weight:600;
+    min-height:22px;
+}
+
+.brand{
+    text-align:center;
+    margin-bottom:2rem;
+}
+
+.brand img{
+    margin-bottom:1rem;
+    align-content: center;
+}
+
+.brand h1{
+    font-family:var(--heading-font);
+    color:var(--primary-color);
+    font-size:2rem;
+}
+
+.brand h1 span{
+    color:var(--sunflower);
+}
+
+.brand p{
+    color:var(--color-text-muted);
+    margin-top:.5rem;
+}

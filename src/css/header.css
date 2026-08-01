@@ -1,0 +1,114 @@
+/* ==================================================
+   HEADER
+================================================== */
+
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    background: var(--primary-color);
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: var(--shadow-md);
+    flex-wrap: wrap;
+}
+
+/* ---------- Logo ---------- */
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.site-logo{
+    width:70px;
+    height:70px;
+
+}
+
+.logo-container h1{
+    color:var(--white);
+    font-family:var(--heading-font);
+    font-size:2rem;
+}
+
+.logo-container span{
+    color:var(--sunflower);
+}
+
+/* ---------- Search ---------- */
+
+.search-bar-container{
+    display:flex;
+    align-items:center;
+    flex:1;
+    max-width:650px;
+    min-width:280px;
+}
+
+.search-bar-container input{
+
+    flex:1;
+    padding:.8rem 1rem;
+    border:none;
+    outline:none;
+    background:var(--color-input-bg);
+    border-radius:8px 0 0 8px;
+    color:var(--color-text-main);
+
+}
+
+.search-bar-container button{
+
+    padding:.8rem 1.4rem;
+    border:none;
+    background:var(--color-accent-gh);
+    color:var(--white);
+    border-radius:0 8px 8px 0;
+    transition:var(--transition-smooth);
+
+}
+
+.search-bar-container button:hover{
+    background:var(--primary-color);
+}
+
+/* ---------- User Menu ---------- */
+
+.user-menu{
+    display:flex;
+    align-items:center;
+    gap:1rem;
+    flex-shrink:0;
+}
+
+#welcomeUser{
+    color:var(--white);
+    font-weight:700;
+    white-space:nowrap;
+}
+
+.btn-accent {
+  padding: 0.8rem 1rem;
+  text-decoration: none;
+  font-family: var(--font-family-base);
+  font-size: 0.9rem;
+  font-weight: 600;
+  background-color: var(--color-accent-yt);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.btn-accent:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
