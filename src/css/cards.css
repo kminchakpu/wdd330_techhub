@@ -275,3 +275,39 @@
 .topic-card-footer {
   padding: 0 1rem 1rem 1rem;
 }
+
+.btn-danger{
+    background:#dc2626;
+    color:#fff;
+    border:none;
+    padding:.8rem 1.2rem;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:600;
+    transition:all .3s ease;
+}
+
+.btn-danger:hover{
+    background:#b91c1c;
+    transform:translateY(-2px);
+}
+
+.saved-summary{
+    margin-top:.5rem;
+    color:var(--color-text-muted);
+    font-size:.95rem;
+}
+
+.welcome-user{
+    font-weight:600;
+    color:var(--primary-color);
+}
+
+.section-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:2rem;
+    flex-wrap:wrap;
+    gap:1rem;
+}

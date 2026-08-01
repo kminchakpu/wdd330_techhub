@@ -1,11 +1,14 @@
-const STORAGE_KEY = 'teachhub_saved_resources';
+import { showToast } from "../ui/toast.js";
+
+const STORAGE_KEY = "teachhub_saved_resources";
 
 // In-memory lookup map for displayed items
 const activeResources = new Map();
 
-/**
- * Registers API items into memory so they can be retrieved when clicked
- */
+/* ======================================
+   Register API Resources
+====================================== */
+
 export function registerResources(items = []) {
   items.forEach((item) => {
     if (item && item.id) {
@@ -14,34 +17,36 @@ export function registerResources(items = []) {
   });
 }
 
-/**
- * Retrieves all saved items from Local Storage
- * @returns {Array} Array of saved resource objects
- */
+/* ======================================
+   Local Storage
+====================================== */
+
 export function getSavedResources() {
   try {
     const data = localStorage.getItem(STORAGE_KEY);
     return data ? JSON.parse(data) : [];
   } catch (error) {
-    console.error('Error reading from Local Storage:', error);
+    console.error("Error reading Local Storage:", error);
     return [];
   }
 }
 
-/**
- * Checks if an item is already saved by its ID
- */
 export function isResourceSaved(id) {
-  const saved = getSavedResources();
-  return saved.some((item) => String(item.id) === String(id));
+  return getSavedResources().some(
+    (item) => String(item.id) === String(id)
+  );
 }
 
-/**
- * Toggles saving/removing a resource in Local Storage
- */
+/* ======================================
+   Save / Remove Resource
+====================================== */
+
 export function toggleSaveResource(resource) {
   let saved = getSavedResources();
-  const index = saved.findIndex((item) => String(item.id) === String(resource.id));
+
+  const index = saved.findIndex(
+    (item) => String(item.id) === String(resource.id)
+  );
 
   let isSavedNow = false;
 
@@ -54,50 +59,85 @@ export function toggleSaveResource(resource) {
   }
 
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(saved)
+    );
+
+    if (isSavedNow) {
+      showToast(
+        "✅ Resource added to your Watchlist",
+        "success"
+      );
+    } else {
+      showToast(
+        "🗑️ Resource removed from your Watchlist",
+        "info"
+      );
+    }
   } catch (error) {
-    console.error('Error writing to Local Storage:', error);
+    console.error("Error writing Local Storage:", error);
+
+    showToast(
+      "Unable to save your changes.",
+      "error"
+    );
   }
 
   return isSavedNow;
 }
 
-/**
- * Updates the badge counter in the header
- */
+/* ======================================
+   Counter
+====================================== */
+
 export function updateSavedCounter() {
-  const countSpan = document.getElementById('savedCount');
+  const countSpan =
+    document.getElementById("savedCount");
+
   if (countSpan) {
-    const saved = getSavedResources();
-    countSpan.textContent = saved.length;
+    countSpan.textContent =
+      getSavedResources().length;
   }
 }
 
-/**
- * Initializes Save button event delegation
- */
+/* ======================================
+   Save Button Events
+====================================== */
+
 export function initSaveHandlers() {
   updateSavedCounter();
 
-  document.addEventListener('click', (e) => {
-    const saveBtn = e.target.closest('.save-btn');
+  document.addEventListener("click", (event) => {
+
+    const saveBtn =
+      event.target.closest(".save-btn");
+
     if (!saveBtn) return;
 
-    const resourceId = saveBtn.getAttribute('data-id');
-    const resourceData = activeResources.get(String(resourceId));
+    const resourceId =
+      saveBtn.dataset.id;
 
-    if (resourceData) {
-      const isSaved = toggleSaveResource(resourceData);
+    const resource =
+      activeResources.get(String(resourceId));
 
-      if (isSaved) {
-        saveBtn.textContent = '★ Saved';
-        saveBtn.classList.add('saved');
-      } else {
-        saveBtn.textContent = '+ Save';
-        saveBtn.classList.remove('saved');
-      }
+    if (!resource) return;
 
-      updateSavedCounter();
+    const isSaved =
+      toggleSaveResource(resource);
+
+    if (isSaved) {
+      saveBtn.textContent = "★ Saved";
+      saveBtn.classList.add("saved");
+    } else {
+      saveBtn.textContent = "+ Save";
+      saveBtn.classList.remove("saved");
     }
+
+    updateSavedCounter();
   });
+}
+
+export function clearSavedResources() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
 }

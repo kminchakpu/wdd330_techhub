@@ -112,3 +112,35 @@
   transform: translateY(-2px);
   box-shadow: var(--shadow-sm);
 }
+
+/* ==========================
+   Watchlist Counter
+========================== */
+
+.watchlist-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.9rem;
+  background: rgba(99, 102, 241, 0.12);
+  color: var(--text-color);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  border-radius: 999px;
+  color: var(--sunflower);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.watchlist-counter strong {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 1.8rem;
+  height: 1.8rem;
+  background: var(--accent-color);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1;
+}

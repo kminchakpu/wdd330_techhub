@@ -5,6 +5,7 @@ import { escapeHTML } from "./utils/utils.js";
 import { initModal } from "./modal/modalModule.js";
 import {initSaveHandlers, registerResources} from "./storage/storageModule.js";
 import {protectPage, getCurrentUser, logoutUser} from "./auth/auth.js";
+import {initToast, showToast} from "./ui/toast.js";
 
 let featuredTopics = [];
 let youtubeVideos = [];
@@ -245,7 +246,6 @@ function initializeTechnologyFilters() {
 --------------------------------------- */
 
 function initializeSearch() {
-
   const input =
     document.getElementById("searchInput");
 
@@ -306,9 +306,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (logoutBtn) {
 
     logoutBtn.addEventListener("click", () => {
-
       logoutUser();
-
       window.location.href = "/auth.html";
 
     });
@@ -321,6 +319,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   initSaveHandlers();
   initializeTechnologyFilters();
   initializeSearch();
+  initToast();
   await loadFeaturedTopics();
   await loadInitialData();
 
@@ -331,7 +330,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const user = getCurrentUser();
 
   if (!user) {
-    alert("Please sign in to watch videos.");
+    showToast("Please sign in to watch videos.", "warning");
     window.location.href = "/auth.html";
     return;
 
@@ -346,13 +345,11 @@ document.addEventListener("click", (event) => {
   const repoButton = event.target.closest(".btn-github");
 
   if (!repoButton) return;
-
   event.preventDefault();
-
   const user = getCurrentUser();
 
   if (!user) {
-    alert("Please sign in to view GitHub repositories.");
+    showToast("Please sign in to view GitHub repositories.", "warning");
     window.location.href = "/auth.html";
     return;
   }
