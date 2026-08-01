@@ -85,15 +85,10 @@ function createSkeletonCards(count = 4) {
         <div class="skeleton skeleton-image"></div>
 
         <div class="card-content">
-
           <div class="skeleton skeleton-title"></div>
-
           <div class="skeleton skeleton-text"></div>
-
           <div class="skeleton skeleton-text short"></div>
-
           <div class="skeleton skeleton-button"></div>
-
         </div>
 
       </article>
@@ -590,9 +585,8 @@ function initializeLogout() {
       );
 
       setTimeout(() => {
-
         window.location.href =
-          "/auth.html";
+          "/index.html";
 
       }, 700);
 
@@ -657,7 +651,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       setTimeout(() => {
 
         window.location.href =
-          "/auth.html";
+          "/auth";
 
       }, 800);
 
@@ -697,7 +691,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       setTimeout(() => {
 
         window.location.href =
-          "/auth.html";
+          "/auth";
 
       }, 800);
 
