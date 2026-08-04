@@ -53,7 +53,6 @@
 
 
 .search-bar-container input{
-
     flex:1;
     padding:.8rem 1rem;
     border:none;
@@ -64,7 +63,7 @@
 
 }
 
-.search-bar-container button{
+.search-bar-container button {
 
     padding:.8rem 1.4rem;
     border:none;
@@ -208,18 +207,22 @@
         width: 100%;
         flex: none;
     }
+}
 
+@media (max-width: 320px) {
     .search-bar-container {
         flex-direction: column;
-    }
-
-    .search-bar-container input {
-        border-radius: 8px;
-        margin-bottom: .5rem;
+        gap: .75rem;
     }
 
     .search-bar-container button {
         width: 100%;
-        border-radius: 8px;
     }
+
+    .search-bar-container input {
+    flex: none;
+    width: 100%;
+    padding: .8rem 1rem;
 }
+}
+

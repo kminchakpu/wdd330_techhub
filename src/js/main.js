@@ -576,7 +576,7 @@ function initializeLogout() {
     authBtn.textContent = "Login";
 
     authBtn.onclick = () => {
-      window.location.href = "auth.html";
+      window.location.href = "/auth";
     };
 
     return;
@@ -591,7 +591,7 @@ function initializeLogout() {
     showToast("Logged out successfully.", "success");
 
     setTimeout(() => {
-      window.location.href = "index.html";
+      window.location.href = "/index.html";
     }, 700);
   };
 }
