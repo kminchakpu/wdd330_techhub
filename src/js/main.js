@@ -576,7 +576,7 @@ function initializeLogout() {
     authBtn.textContent = "Login";
 
     authBtn.onclick = () => {
-      window.location.href = "/auth";
+      window.location.href = "auth.html";
     };
 
     return;
