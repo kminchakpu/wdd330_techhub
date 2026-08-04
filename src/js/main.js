@@ -565,35 +565,37 @@ function initializeLoadMore() {
 ========================================== */
 
 function initializeLogout() {
+  const authBtn = document.getElementById("logoutBtn");
 
-  const logoutBtn =
-    document.getElementById(
-      "logoutBtn"
-    );
+  if (!authBtn) return;
 
-  if (!logoutBtn) return;
+  const user = getCurrentUser();
 
-  logoutBtn.addEventListener(
-    "click",
-    () => {
+  // User is NOT logged in
+  if (!user) {
+    authBtn.textContent = "Login";
 
-      logoutUser();
+    authBtn.onclick = () => {
+      window.location.href = "auth.html";
+    };
 
-      showToast(
-        "Logged out successfully.",
-        "success"
-      );
+    return;
+  }
 
-      setTimeout(() => {
-        window.location.href =
-          "/index.html";
+  // User IS logged in
+  authBtn.textContent = "Logout";
 
-      }, 700);
+  authBtn.onclick = () => {
+    logoutUser();
 
-    }
-  );
+    showToast("Logged out successfully.", "success");
 
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 700);
+  };
 }
+
 
 /* ==========================================
    Main
