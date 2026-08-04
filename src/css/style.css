@@ -8,6 +8,7 @@
 @import "./auth.css";
 @import "./footer.css";
 @import "./utilities.css";
-@import "./responsive.css";
 @import "./confirmModal.css";
 @import "./toast.css";
+
+@import "./responsive.css";

@@ -50,3 +50,23 @@
 .close-btn:hover{
     transform:rotate(90deg);
 }
+
+@media (max-width: 480px) {
+    .modal {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .close-btn {
+        width: 36px;
+        height: 36px;
+        top: 10px;
+        right: 10px;
+        font-size: 1.1rem;
+    }
+
+      .modal-content {
+        border-radius: 8px;
+    }
+}

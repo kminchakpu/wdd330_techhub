@@ -65,3 +65,27 @@
   outline: 3px solid rgba(79, 70, 229, 0.35);
   outline-offset: 3px;
 }
+
+@media (max-width: 320px) {
+
+    .technology-filters {
+        gap: .5rem;
+        padding: 0 .5rem;
+    }
+
+    .tech-filter-btn {
+        width: 100%;
+        padding: .75rem 1rem;
+        font-size: .9rem;
+    }
+
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .controls select {
+        width: 100%;
+    }
+
+}

@@ -14,3 +14,24 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
+
+@media (max-width: 480px) {
+    .hero-banner {
+        padding: 1.25rem 1rem;
+    }
+
+    .hero-banner h2 {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 320px) {
+    .hero-banner {
+        padding: 1rem 0.75rem;
+    }
+
+    .hero-banner h2 {
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+}

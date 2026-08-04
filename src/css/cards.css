@@ -400,3 +400,20 @@
     margin:25px 18px;
 
 }
+
+@media (max-width: 320px) {
+
+    .main-content{
+        padding:1rem;
+    }
+
+    .card-actions{
+        flex-direction:column;
+    }
+
+    .btn-sm{
+        width:100%;
+        min-width:0;
+    }
+
+}
