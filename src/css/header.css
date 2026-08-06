@@ -149,6 +149,7 @@
     .site-header {
         padding: 1rem;
         justify-content: center;
+        position:sticky;
     }
 
     .logo-container {
