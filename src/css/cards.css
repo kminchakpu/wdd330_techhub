@@ -417,3 +417,17 @@
     }
 
 }
+
+.btn-learn {
+    background: var(--primary-color);
+    color: var(--white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    transition: var(--transition-smooth);
+}
+
+.btn-learn:hover {
+    background: var(--color-accent-gh);
+}

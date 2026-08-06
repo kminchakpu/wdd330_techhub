@@ -188,6 +188,16 @@ function renderFeaturedTopics(topics) {
 
         </div>
 
+        <div class="topic-card-footer">
+         <a
+            href="${topic.url}"
+            class="btn-sm btn-learn"
+            target="_blank"
+            rel="noopener noreferrer">
+            Learn More
+        </a>
+        </div>
+
       </article>
 
     `)
@@ -195,10 +205,10 @@ function renderFeaturedTopics(topics) {
 
 }
 
+
 /* ==========================================
    Filtering Helpers
 ========================================== */
-
 function getFilteredVideos() {
 
   let videos = [...youtubeVideos];
